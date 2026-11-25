@@ -1,0 +1,39 @@
+/* ANS logo — single source of truth. Each piece is separately animatable. */
+window.ANSLogo = function (p, opts) {
+  p = p || 'l';
+  opts = opts || {};
+  var pieces = opts.pieces ? ' data-piece' : '';
+  return (
+'<svg class="'+(opts.cls||'')+'" viewBox="0 0 260 252" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ANS Capital Services Private Limited logo" focusable="false">'+
+  '<defs>'+
+    '<linearGradient id="'+p+'-gold" x1="0" y1="0" x2="1" y2="1">'+
+      '<stop offset="0" stop-color="#E3B45C"/><stop offset=".48" stop-color="#C98B28"/><stop offset="1" stop-color="#A9711A"/>'+
+    '</linearGradient>'+
+    '<linearGradient id="'+p+'-navy" x1=".1" y1="0" x2=".9" y2="1">'+
+      '<stop offset="0" stop-color="#0B4486"/><stop offset=".55" stop-color="#012C59"/><stop offset="1" stop-color="#01203F"/>'+
+    '</linearGradient>'+
+  '</defs>'+
+  /* 1 — gold arc (crescent over the top) */
+  '<path'+pieces+' data-k="arc" fill="url(#'+p+'-gold)" d="M20 124 C16 60 66 8 130 8 C194 8 244 60 240 124 C240 124 233 125 229.5 125 C232 70 187 25 130 25 C73 25 28 70 30.5 125 C27 125 20 124 20 124 Z"/>'+
+  /* 2 — house roof */
+  '<path'+pieces+' data-k="roof" fill="url(#'+p+'-navy)" d="M130 36 L198 94 L186 94 L130 50 L74 94 L62 94 Z"/>'+
+  /* 3 — house body */
+  '<path'+pieces+' data-k="body" fill="url(#'+p+'-navy)" d="M78 90 L182 90 L182 150 L78 150 Z"/>'+
+  /* 4 — window */
+  '<g'+pieces+' data-k="win">'+
+    '<rect x="116" y="104" width="38" height="38" rx="3" fill="#fff"/>'+
+    '<rect x="133" y="104" width="4" height="38" fill="url(#'+p+'-navy)"/>'+
+    '<rect x="116" y="121" width="38" height="4" fill="url(#'+p+'-navy)"/>'+
+  '</g>'+
+  /* 5 — cupped hand */
+  '<path'+pieces+' data-k="hand" fill="url(#'+p+'-navy)" d="M28 128 C16 184 58 226 122 230 C174 233 222 210 243 166 C248 155 240 146 231 153 C204 174 168 184 132 180 C88 175 60 155 52 128 C47 113 32 113 28 128 Z"/>'+
+  /* 6 — gold coin */
+  '<circle'+pieces+' data-k="coin" cx="201" cy="131" r="39" fill="url(#'+p+'-gold)"/>'+
+  /* 7 — rupee glyph */
+  '<g'+pieces+' data-k="rupee" fill="none" stroke="#fff" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round">'+
+    '<path d="M187 112 H216"/>'+
+    '<path d="M187 124 H216"/>'+
+    '<path d="M187 112 C205 112 212 117 212 124 C212 131 205 136 191 136 L187 136 L215 158"/>'+
+  '</g>'+
+'</svg>');
+};

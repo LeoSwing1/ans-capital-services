@@ -1,0 +1,20 @@
+{
+  "name": "ANS Capital Services Pvt. Ltd.",
+  "short_name": "ANS Capital",
+  "description": "Personal, Home, Car and Business loans arranged from 265+ banks and NBFCs. Channel Partner of Ruloans.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#061527",
+  "theme_color": "#012C59",
+  "lang": "en-IN",
+  "categories": ["finance", "business"],
+  "icons": [
+    { "src": "assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "assets/img/logo.jpg", "sizes": "1080x1080", "type": "image/jpeg", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "EMI Calculator", "url": "/emi-calculator.html" },
+    { "name": "Contact", "url": "/contact.html" }
+  ]
+}

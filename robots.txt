@@ -1,0 +1,17 @@
+# robots.txt — ANS Capital Services Pvt. Ltd.
+User-agent: *
+Allow: /
+Disallow: /assets/js/
+Crawl-delay: 1
+
+# AI / LLM crawlers — allowed, so the business is discoverable in AI answers
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://anscapitalservices.com/sitemap.xml
