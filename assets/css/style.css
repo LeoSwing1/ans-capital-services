@@ -283,7 +283,7 @@ body.menu-open .sheet-in{transform:none}
   background:rgba(255,255,255,.1);color:#fff;font-size:.93rem;transition:border-color .3s,background .3s;
 }
 .qcard input::placeholder{color:rgba(255,255,255,.42)}
-.qcard select option{color:#0A1628;background:#fff}
+
 .qcard input:focus,.qcard select:focus{outline:0;border-color:var(--gold-400);background:rgba(255,255,255,.16)}
 .qnote{font-size:.705rem;color:rgba(255,255,255,.5);margin:.8rem 0 0;text-align:center;line-height:1.5}
 
@@ -1438,7 +1438,7 @@ body.is-article .readbar{display:block}
   color:#fff
 }
 .card-dark .field input::placeholder,.card-dark .field textarea::placeholder{color:rgba(255,255,255,.4)}
-.card-dark .field select option{color:var(--ink);background:#fff}
+
 .card-dark .field input:focus,.card-dark .field select:focus,.card-dark .field textarea:focus{
   border-color:var(--gold-400);background:rgba(255,255,255,.13);box-shadow:0 0 0 3px rgba(201,154,53,.2)
 }
@@ -2772,3 +2772,39 @@ img{content-visibility:auto}
 @media (max-width:1400px){h2 em,.h2 em{white-space:normal}}
 /* the scrolling table must not drag its column a few pixels wider */
 .prose,.prose .in,.tbl-wrap{min-width:0;max-width:100%}
+
+/* ── native select menus ──────────────────────────────────────────────
+   A dropdown's option list is drawn by the browser, not by the page, and
+   several engines honour `color` on an option while ignoring its
+   `background-color` — which left light text on the platform's white
+   popup, unreadable. `color-scheme` tells the engine the whole control is
+   dark, so it paints the list dark to begin with; the explicit colours
+   below cover the engines that do honour them. */
+:root{color-scheme:dark}
+select,input,textarea,button{color-scheme:dark}
+select option,select optgroup,
+.field select option,.qcard select option,.card-dark .field select option{
+  background-color:#17120D;color:#F4EFE9
+}
+select option:checked,select option:hover{background-color:#2A2118;color:#FFF4DC}
+select option:disabled{color:#A99D91}
+/* the arrow has to stay visible against the dark field */
+.field select,.qcard select,.card-dark .field select{
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23D4A03A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center;background-size:12px 8px;
+  padding-right:2.6rem
+}
+
+/* ── sticky sidebar ───────────────────────────────────────────────────
+   Once the split stacks to one column the sidebar sits above the article,
+   and a sticky box stays pinned for the height of the whole grid — so it
+   rides down over the text. Stacked, it is just another block. */
+@media (max-width:1100px){
+  .side{position:static;top:auto}
+  .side-card{margin-bottom:1.1rem}
+}
+/* `overflow:hidden` makes a section a scroll container, which is what stops
+   the sticky sidebar from pinning. `clip` hides the decorative shapes the
+   same way without creating one. Browsers without it keep the old behaviour. */
+.sec,.sec-sm,.sec-lg,section{overflow:clip}
