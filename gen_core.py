@@ -165,10 +165,10 @@ def head(title, desc, path, keywords="", schema="", og_type="website"):
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"></noscript>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="assets/css/style.min.css">
 
 <!-- ===== Consent Mode v2 — defaults set before any Google tag loads =====
      Denied by default; assets/js/app.js updates it once the visitor chooses.
@@ -412,17 +412,36 @@ def rail():
 </div>
 """
 
+SHADER = '<script src="assets/js/shader.min.js" defer></script>\n'
+
+# The chatbot bundle is fetched the first time someone reaches for it — on the
+# button, or on the first scroll or pointer move, whichever comes first. The
+# button is plain markup, so it is there and labelled before the script exists.
+CHAT_LOADER = """<script>
+(function(){var l=0;function load(){if(l)return;l=1;
+var s=document.createElement('script');s.src='assets/js/chatbot.min.js';
+s.onload=function(){var b=document.querySelector('[data-bot]');if(b&&window.__ansBotPending){window.__ansBotPending=0;b.click();}};
+document.body.appendChild(s);}
+var b=document.querySelector('[data-bot]');
+if(b)b.addEventListener('click',function(){if(!l){window.__ansBotPending=1;load();}},{once:false});
+['scroll','pointermove','touchstart','keydown'].forEach(function(e){
+  addEventListener(e,load,{once:true,passive:true});});
+setTimeout(load,12000);
+})();
+</script>
+"""
+
 SCRIPTS = """
-<script src="assets/js/logo.js"></script>
-<script src="assets/js/preloader.js"></script>
-<script src="assets/js/shader.js" defer></script>
-<script src="assets/js/chatbot.js" defer></script>
-<script src="assets/js/app.js" defer></script>
-<script src="assets/js/ux.js" defer></script>
-<script src="assets/js/nav.js" defer></script>
-</body>
+<script src="assets/js/logo.min.js"></script>
+<script src="assets/js/preloader.min.js"></script>
+{shader}<script src="assets/js/app.min.js" defer></script>
+<script src="assets/js/ux.min.js" defer></script>
+<script src="assets/js/nav.min.js" defer></script>
+{chat}</body>
 </html>
 """
 
 def page(title, desc, path, body, active="", keywords="", schema="", pre=True):
-    return head(title, desc, path, keywords, schema) + (PRE if pre else "") + nav(active) + body + footer() + rail() + SCRIPTS
+    scripts = SCRIPTS.format(shader=SHADER if path in ("index.html", "") else "",
+                             chat=CHAT_LOADER)
+    return head(title, desc, path, keywords, schema) + (PRE if pre else "") + nav(active) + body + footer() + rail() + scripts

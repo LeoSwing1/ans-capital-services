@@ -15,6 +15,19 @@
 
   var gl = cv.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance' })
         || cv.getContext('experimental-webgl');
+
+  /* A fragment shader this size is cheap on a GPU and ruinous without one.
+     Headless browsers, old Androids and locked-down desktops fall back to a
+     software rasteriser, where every frame becomes a long main-thread task —
+     the page stops responding to touch. Where that is what we have, the
+     painted gradient is the better picture. */
+  if (gl) {
+    try {
+      var dbg = gl.getExtension('WEBGL_debug_renderer_info');
+      var r = (dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER)) || '';
+      if (/swiftshader|llvmpipe|software|microsoft basic|mesa offscreen/i.test(r)) { fallback(); return; }
+    } catch (e) {}
+  }
   if (!gl) { fallback(); return; }
 
   var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
@@ -189,5 +202,16 @@
     }, { threshold: 0 }).observe(cv);
   }
   if (reduce) { gl.uniform1f(uT, 4.0); gl.uniform2f(uM, 0, 0); gl.drawArrays(gl.TRIANGLES, 0, 3); }
-  else raf = requestAnimationFrame(loop);
+  else {
+    /* one frame now so the hero is never an empty box, then stand aside until
+       the page has finished loading and the main thread is quiet */
+    gl.uniform1f(uT, 2.0); gl.uniform2f(uM, 0, 0); gl.drawArrays(gl.TRIANGLES, 0, 3);
+    var begin = function () {
+      var go = function () { last = performance.now(); raf = requestAnimationFrame(loop); };
+      if (window.requestIdleCallback) requestIdleCallback(go, { timeout: 1800 });
+      else setTimeout(go, 700);
+    };
+    if (document.readyState === 'complete') begin();
+    else window.addEventListener('load', begin, { once: true });
+  }
 })();

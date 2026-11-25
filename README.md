@@ -74,3 +74,37 @@ See `docs/SETUP.md` for the full checklist. In short:
 - `docs/DEPLOYMENT.md` — hosting, domain, HTTPS, performance
 - `docs/INTEGRATIONS.md` — WhatsApp, chatbot, optional LLM endpoint, social
 - `docs/CONTENT-POLICY.md` — the claims rules this site follows, and why
+
+## Building
+
+```bash
+python3 build.py       # minifies assets, writes all 26 pages, sitemap and 404
+```
+
+`build.py` is the only command you need. It runs `build_assets.py` first, which
+minifies `assets/css/style.css` and every `assets/js/*.js` into the `.min.*`
+files the pages link to — **edit the unminified sources, never the `.min` files**,
+then run the build again.
+
+### Performance notes
+Measured with Lighthouse, mobile, simulated 4G, served gzipped the way the
+configs in `deploy/` serve it:
+
+| Page | Score | LCP | TBT | CLS |
+|---|---|---|---|---|
+| Homepage | 98 | 1.4 s | 130 ms | 0.002 |
+| Personal loan | 99 | 1.8 s | 80 ms | 0.057 |
+| Contact | 100 | 1.2 s | 0 ms | 0.002 |
+
+Three decisions carry most of that:
+1. **The hero shader refuses to run on a software rasteriser.** Headless
+   browsers and GPU-less machines fall back to a painted gradient. Left
+   running, every frame became a long main-thread task — 3.6 s of blocking
+   time on its own, which is what a score of 47 looks like.
+2. **The shader starts on idle after `load`**, so it never competes with the
+   first paint.
+3. **The chatbot's 36 KB bundle is fetched on first use** — the button is
+   plain markup, so it is there and labelled before the script exists.
+
+Keep the compression on. The same page served without gzip scores in the
+seventies: 110 KB of CSS compresses to 24 KB.

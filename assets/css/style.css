@@ -2753,3 +2753,22 @@ img{content-visibility:auto}
 .gmb-nap a,.gmb-nap b{font-size:.95rem;color:var(--fg);font-weight:500;text-decoration:none}
 .gmb-nap a:hover{color:var(--gold-400)}
 @media (max-width:900px){.gmb-card{grid-template-columns:1fr}}
+
+/* ── grid blowout ─────────────────────────────────────────────────────
+   A grid item's automatic minimum size is its min-content width, so one
+   long word or a nowrap run can push a 1fr track wider than its container
+   and the whole card leaves the page. Letting items shrink is the fix. */
+.split>*,.split-wide>*,.split-flip>*,.calc>*,.grid>*,.g2>*,.g3>*,.g4>*,
+.hero-grid>*,.foot-top>*,.slide-row>*,.calc-out>*,.gmb-card>*,.strip-grid>*,
+.side>*,.side-card>*,.doc-grid>*,.flow>*,.sb-grid>*,.rev-grid>*{min-width:0}
+.split,.split-wide,.split-flip,.calc,.grid,.g2,.g3,.g4,.hero-grid,
+.foot-top,.gmb-card,.strip-grid,.doc-grid,.flow,.sb-grid,.rev-grid{min-width:0}
+.side,.side-card{min-width:0;max-width:100%}
+/* long unbroken strings — emails, URLs, reference numbers — wrap instead of
+   dragging their container wide */
+.side-card,.ccard,.card,.calc-out,.gmb-nap,.post,.svc{overflow-wrap:anywhere}
+/* a nowrap accent is only safe while it fits; below the wide breakpoint it
+   is the single most common cause of a clipped headline */
+@media (max-width:1400px){h2 em,.h2 em{white-space:normal}}
+/* the scrolling table must not drag its column a few pixels wider */
+.prose,.prose .in,.tbl-wrap{min-width:0;max-width:100%}

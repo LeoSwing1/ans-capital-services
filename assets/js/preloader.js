@@ -56,7 +56,19 @@
     return;
   }
 
-  /* --- full assembly --- */
+  /* --- full assembly ---
+     The splash is the first thing a visitor sees, so it is also the first
+     thing a slow phone has to pay for. The whole sequence is scaled: full
+     length on a desktop, a little over half on a phone, and skipped on a
+     metered or 2G connection where it would simply be a blank wait. */
+  var conn = navigator.connection || {};
+  if (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '')) {
+    setTimeout(function () { finish(true); }, 220);
+    return;
+  }
+  var SPEED = window.innerWidth < 760 ? 0.55 : 0.78;
+  var ms = function (n) { return Math.round(n * SPEED); };
+
   var svg = markHost.firstChild;
   var P = {};
   svg.querySelectorAll('[data-piece]').forEach(function (el) { P[el.getAttribute('data-k')] = el; });
@@ -75,16 +87,16 @@
   var LAND = 0;
   SEQ.forEach(function (s) {
     var el = P[s[0]]; if (!el) return;
-    var end = s[2] + s[3]; if (end > LAND) LAND = end;
+    var end = ms(s[2]) + ms(s[3]); if (end > LAND) LAND = end;
     el.animate(
       [{ transform: s[1], opacity: 0, filter: 'blur(5px)' },
        { transform: 'none', opacity: 1, filter: 'blur(0px)' }],
-      { duration: s[3], delay: s[2], easing: 'cubic-bezier(.17,.85,.3,1)', fill: 'both' }
+      { duration: ms(s[3]), delay: ms(s[2]), easing: 'cubic-bezier(.17,.85,.3,1)', fill: 'both' }
     );
   });
 
   /* splash at the moment the mark completes */
-  var splashAt = LAND - 170;
+  var splashAt = LAND - ms(170);
 
   setTimeout(function () {
     var flash = pre.querySelector('.pre-flash');
@@ -118,7 +130,7 @@
   }, splashAt);
 
   /* wordmark */
-  var wordAt = LAND + 170;
+  var wordAt = LAND + ms(150);
   setTimeout(function () {
     w1.querySelectorAll('span').forEach(function (s, i) {
       if (!s.animate) { s.style.opacity = 1; s.style.transform = 'none'; return; }
@@ -137,10 +149,10 @@
       if (p4) p4.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }],
         { duration: 760, delay: 880, easing: 'cubic-bezier(.17,.85,.3,1)', fill: 'both' });
     } else { p2.style.opacity = 1; p3.style.opacity = 1; if (p4) p4.style.opacity = 1; }
-    setTimeout(function () { word.classList.add('lines'); }, 560);
+    setTimeout(function () { word.classList.add('lines'); }, ms(560));
   }, wordAt);
 
-  var total = wordAt + 1950;
+  var total = wordAt + ms(1500);
   var timer = setTimeout(function () { finish(); }, total);
 
   /* skip */

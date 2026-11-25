@@ -170,3 +170,10 @@ def product_page(p):
     html = page(p["title"], p["meta_desc"], p["slug"], body, active=p["slug"], keywords=p["kw"], schema=schema)
     open(p["slug"], "w").write(html)
     return p["slug"], len(html)
+
+
+if __name__ == "__main__":
+    from data_products import P
+    for p in P:
+        slug, n = product_page(p)
+        print(f"  {slug:<30} {n//1024} KB")
