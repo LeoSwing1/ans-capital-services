@@ -29,21 +29,28 @@
   });
   document.body.appendChild(top);
 
+  /* The bar is scaled, not resized: width is a layout property and changing it
+     on every scroll frame relayouts the document, while a transform stays on
+     the compositor. The page height is measured once per resize rather than
+     once per frame, so scrolling never reads layout at all. */
+  var docH = 0;
+  function measure() { docH = document.documentElement.scrollHeight - window.innerHeight; }
   var ticking = false;
   function onScroll() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
-      var h = document.documentElement.scrollHeight - window.innerHeight;
-      var p = h > 0 ? Math.min(window.scrollY / h, 1) : 0;
-      bar.style.width = (p * 100) + '%';
+      var p = docH > 0 ? Math.min(window.scrollY / docH, 1) : 0;
+      bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
       bar.classList.toggle('on', window.scrollY > 120);
       top.classList.toggle('on', window.scrollY > window.innerHeight * 0.9);
       ticking = false;
     });
   }
+  measure();
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', function () { measure(); onScroll(); });
+  if ('ResizeObserver' in window) new ResizeObserver(measure).observe(document.body);
   onScroll();
 
   /* ---------------- page transitions + prefetch ---------------- */
@@ -79,7 +86,13 @@
     if (isInternal(a)) prefetch(a.href);
   }, { passive: true });
 
-  if (!reduce) {
+  /* Where the browser can cross-fade between documents itself, the click goes
+     straight through: the navigation is immediate and the fade is the
+     browser's, which is smoother than holding the page back for 220 ms. */
+  var nativeVT = 'startViewTransition' in document &&
+                 window.CSS && CSS.supports && CSS.supports('view-transition-name', 'none');
+
+  if (!reduce && !nativeVT) {
     document.addEventListener('click', function (e) {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
       var a = e.target.closest && e.target.closest('a');

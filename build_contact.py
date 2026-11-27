@@ -46,19 +46,19 @@ BODY = f"""
         <h2 style="font-size:clamp(1.8rem,3.4vw,2.6rem)" class="g-navy">Reach us directly</h2>
         <div class="grid" style="gap:.8rem;margin-top:1.8rem">
           <a class="ccard" href="tel:+{PHONE}" data-ev="call_contact">
-            <span class="ci2">{I['phone']}</span><span><h4>Phone</h4><p>{PHONE_D}</p></span></a>
+            <span class="ci2">{I['phone']}</span><span><h3>Phone</h3><p>{PHONE_D}</p></span></a>
           <a class="ccard" href="{WA_DEFAULT}" target="_blank" rel="noopener" data-ev="wa_contact">
-            <span class="ci2">{I['wa']}</span><span><h4>WhatsApp</h4><p>{PHONE_D} · send documents here</p></span></a>
+            <span class="ci2">{I['wa']}</span><span><h3>WhatsApp</h3><p>{PHONE_D} · send documents here</p></span></a>
           <a class="ccard" href="mailto:{EMAIL}">
-            <span class="ci2">{I['mail']}</span><span><h4>Email</h4><p>{EMAIL}</p></span></a>
-          <div class="ccard"><span class="ci2">{I['clock']}</span><span><h4>Office hours</h4><p>Monday – Saturday<br>10:00 AM – 7:00 PM IST<br><span style="font-size:.78rem;color:var(--muted);font-weight:500">Subject to confirmation — please call ahead</span></p></span></div>
-          <div class="ccard"><span class="ci2">{I['pin']}</span><span><h4>Service area</h4><p>Delhi NCR and Uttar Pradesh, and elsewhere in India where documents can be shared electronically<br><span style="font-size:.78rem;color:var(--muted);font-weight:500">Full office address will be published here once confirmed</span></p></span></div>
+            <span class="ci2">{I['mail']}</span><span><h3>Email</h3><p>{EMAIL}</p></span></a>
+          <div class="ccard"><span class="ci2">{I['clock']}</span><span><h3>Office hours</h3><p>Monday – Saturday<br>10:00 AM – 7:00 PM IST<br><span style="font-size:.78rem;color:var(--muted);font-weight:500">Subject to confirmation — please call ahead</span></p></span></div>
+          <div class="ccard"><span class="ci2">{I['pin']}</span><span><h3>Service area</h3><p>Delhi NCR and Uttar Pradesh, and elsewhere in India where documents can be shared electronically<br><span style="font-size:.78rem;color:var(--muted);font-weight:500">Full office address will be published here once confirmed</span></p></span></div>
           <button class="ccard" type="button" data-bot style="text-align:left;cursor:pointer;width:100%;font:inherit" data-ev="bot_contact">
-            <span class="ci2">{I['bot']}</span><span><h4>Chat assistant</h4><p>हिंदी / English · instant answers on rates, documents and EMI</p></span></button>
+            <span class="ci2">{I['bot']}</span><span><h3>Chat assistant</h3><p>हिंदी / English · instant answers on rates, documents and EMI</p></span></button>
         </div>
 
         <div class="hindi-box" style="margin-top:2rem">
-          <h4>हिंदी में बात कीजिए</h4>
+          <h3>हिंदी में बात कीजिए</h3>
           <p>आप हमसे <b>हिंदी</b> में बात कर सकते हैं — फ़ोन पर, WhatsApp पर, और इस वेबसाइट पर भी। मेन्यू में <b>हिं</b> बटन दबाइए, या नीचे दाईं तरफ़ चैट खोलकर हिंदी चुन लीजिए।</p>
           <p>पहली बार मैसेज कर रहे हैं? बस ये चार बातें भेज दीजिए — <b>कौन सा लोन, कितनी रकम, नौकरी या बिज़नेस, और महीने की आमदनी</b>। इतने से हम बता देंगे कि आपको कहाँ से और किस दर पर लोन मिल सकता है।</p>
         </div>
@@ -84,7 +84,7 @@ BODY = f"""
         <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem)" class="g-navy">On the map</h2>
         <p class="lead" style="margin-top:1rem">We work across Delhi NCR and the surrounding Uttar Pradesh belt, and handle files from the rest of India remotely. Call before visiting so we can keep the time free for you.</p>
         <div class="card" style="margin-top:1.6rem">
-          <h4 style="margin-bottom:.4rem">Google Business Profile</h4>
+          <h3 style="margin-bottom:.4rem">Google Business Profile</h3>
           <p style="font-size:.9rem;color:var(--muted);margin-bottom:1.2rem">Find our directions, hours and reviews on Google — and if we have helped you, a review genuinely helps other borrowers find an honest desk.</p>
           <div class="btn-row">
             <a class="btn btn-ghost btn-sm" href="{GMB_PROFILE}" target="_blank" rel="noopener" data-ev="gmb_profile">{I['pin']}Open in Google Maps</a>
@@ -92,7 +92,7 @@ BODY = f"""
           </div>
         </div>
         <div class="card" style="margin-top:1rem">
-          <h4 style="margin-bottom:.6rem">Follow us</h4>
+          <h3 style="margin-bottom:.6rem">Follow us</h3>
           <div class="socials lite">
             <a class="soc ig" href="{SOCIAL['ig']}" target="_blank" rel="noopener me" aria-label="Instagram" data-ev="social_ig">{I['ig']}</a>
             <a class="soc fb" href="{SOCIAL['fb']}" target="_blank" rel="noopener me" aria-label="Facebook" data-ev="social_fb">{I['fb']}</a>

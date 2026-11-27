@@ -183,13 +183,46 @@ gtag('consent','default',{{
 gtag('set','ads_data_redaction',true);
 gtag('set','url_passthrough',true);
 </script>
-<!-- ===== Google Tag Manager ===== -->
-<script>(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{'gtm.start':new Date().getTime(),event:'gtm.js'}});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);}})(window,document,'script','dataLayer','{GTM}');</script>
-<!-- ===== GA4 ===== -->
-<script async src="https://www.googletagmanager.com/gtag/js?id={GA4}"></script>
-<script>gtag('js',new Date());gtag('config','{GA4}',{{send_page_view:true}});</script>
-<!-- ===== Meta Pixel ===== -->
-<script>!function(f,b,e,v,n,t,s){{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)}};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','{PIXEL}');fbq('track','PageView');</script>
+<!-- ===== Measurement tags, loaded off the critical path =====
+     GTM, GA4 and the Meta Pixel together pull roughly 290 KB and run on the
+     main thread. Fired during load they push Total Blocking Time past a
+     second on a mid-range phone. They are started on the first interaction,
+     or once the page has been idle after load — whichever comes first — so
+     the visitor gets an interactive page and the tags still get their data.
+     The consent defaults above are already set, so nothing fires unconsented. -->
+<script>
+(function(){{
+  var started=0;
+  /* The IDs below ship as placeholders. Firing tags with a placeholder ID
+     costs three failed requests and three console errors on every visit and
+     measures nothing, so nothing loads until the real IDs are pasted in. */
+  var ids=['{GTM}','{GA4}','{PIXEL}'];
+  if(ids.some(function(v){{return !v||/X{{4,}}|^\s*$/.test(v)}})) return;
+  function start(){{
+    if(started)return; started=1;
+    var d=document, h=d.getElementsByTagName('script')[0];
+    function js(src){{var j=d.createElement('script');j.async=true;j.src=src;h.parentNode.insertBefore(j,h);return j;}}
+    /* GTM */
+    window.dataLayer.push({{'gtm.start':new Date().getTime(),event:'gtm.js'}});
+    js('https://www.googletagmanager.com/gtm.js?id={GTM}');
+    /* GA4 */
+    js('https://www.googletagmanager.com/gtag/js?id={GA4}');
+    gtag('js',new Date());
+    gtag('config','{GA4}',{{send_page_view:true}});
+    /* Meta Pixel */
+    !function(f,b,e,v,n,t,s){{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)}};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
+      s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','{PIXEL}'); fbq('track','PageView');
+  }}
+  ['pointerdown','touchstart','keydown','scroll'].forEach(function(e){{
+    addEventListener(e,start,{{once:true,passive:true}});}});
+  addEventListener('load',function(){{
+    if(window.requestIdleCallback) requestIdleCallback(start,{{timeout:4000}});
+    else setTimeout(start,2500);
+  }});
+}})();
+</script>
 
 <script>window.ANS={{phone:'{PHONE}',phoneDisplay:'{PHONE_D}'}};</script>
 <!-- scroll reveals only arm themselves once scripts are confirmed to run, so a script failure leaves every section visible -->
@@ -241,7 +274,9 @@ def nav(active=""):
       </a>
     </div>
 
-    <a class="nav-logo" href="index.html" aria-label="{BRAND} — home">
+    <!-- the accessible name has to contain the link's own visible words,
+         or a voice-control user cannot say what they can see -->
+    <a class="nav-logo" href="index.html" aria-label="ANS Capital Services — home">
       <span data-logo></span>
       <span class="nm"><b>ANS</b><span>Capital Services</span></span>
     </a>
@@ -267,7 +302,7 @@ def nav(active=""):
     <div class="panels">
 
       <section class="panel panel-wide">
-        <h5>Loan products</h5>
+        <p class="h5">Loan products</p>
         <div class="panel-2col">
           <nav class="panel-links" aria-label="Core loan products">{col_a}</nav>
           <nav class="panel-links" aria-label="Other loan products">{col_b}</nav>
@@ -275,7 +310,7 @@ def nav(active=""):
       </section>
 
       <section class="panel">
-        <h5>Tools &amp; guides</h5>
+        <p class="h5">Tools &amp; guides</p>
         <nav class="panel-links" aria-label="Tools">
           <a href="emi-calculator.html"{cls('emi-calculator.html')}>EMI Calculator</a>
           <a href="how-it-works.html"{cls('how-it-works.html')}>How It Works</a>
@@ -285,7 +320,7 @@ def nav(active=""):
       </section>
 
       <section class="panel">
-        <h5>Company</h5>
+        <p class="h5">Company</p>
         <nav class="panel-links" aria-label="Company">
           <a href="index.html"{cls('index.html')}>Home</a>
           <a href="about.html"{cls('about.html')}>About Us</a>
@@ -295,7 +330,7 @@ def nav(active=""):
       </section>
 
       <section class="panel panel-meter">
-        <h5>Rate meter</h5>
+        <p class="h5">Rate meter</p>
         <div class="meter" data-meter>
           <div class="meter-top">
             <span class="meter-prod" data-meter-name>Home Loan</span>
@@ -343,11 +378,11 @@ def footer():
           <div class="socials" style="margin-top:1.6rem">{socs}</div>
         </div>
         <div>
-          <h5>Loan Products</h5>
+          <p class="h5">Loan Products</p>
           <ul class="foot-links">{prod}</ul>
         </div>
         <div>
-          <h5>Company</h5>
+          <p class="h5">Company</p>
           <ul class="foot-links">
             <li><a href="about.html">About Us</a></li>
             <li><a href="services.html">Our Services</a></li>
@@ -359,7 +394,7 @@ def footer():
           </ul>
         </div>
         <div>
-          <h5>Get In Touch</h5>
+          <p class="h5">Get In Touch</p>
           <ul class="foot-ct">
             <li>{I['phone']}<a href="tel:+{PHONE}" data-ev="call_footer">{PHONE_D}</a></li>
             <li>{I['wa']}<a href="{WA_DEFAULT}" target="_blank" rel="noopener" data-ev="wa_footer">WhatsApp us</a></li>

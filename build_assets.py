@@ -12,15 +12,21 @@ def run(cmd):
     return r
 
 total_before = total_after = 0
+# build_purge.py writes style.purged.css; use it when it is there
+SRC = "assets/css/style.purged.css" if os.path.exists("assets/css/style.purged.css") \
+      else "assets/css/style.css"
 run([NPX + "/cleancss", "-O2", "--format", "keep-breaks:false",
-     "-o", "assets/css/style.min.css", "assets/css/style.css"])
+     "-o", "assets/css/style.min.css", SRC])
 b = os.path.getsize("assets/css/style.css"); a = os.path.getsize("assets/css/style.min.css")
 total_before += b; total_after += a
 print(f"  style.css      {b//1024:>4} KB -> {a//1024:>4} KB")
 
 for name in JS:
     src, dst = f"assets/js/{name}.js", f"assets/js/{name}.min.js"
-    run([NPX + "/terser", src, "-c", "passes=2", "-m", "--comments", "false", "-o", dst])
+    # ecma 2018 keeps modern syntax instead of down-levelling it, which is
+    # what Lighthouse flags as "legacy JavaScript"
+    run([NPX + "/terser", src, "-c", "passes=2,ecma=2018", "-m",
+         "--ecma", "2018", "--comments", "false", "-o", dst])
     b = os.path.getsize(src); a = os.path.getsize(dst)
     total_before += b; total_after += a
     print(f"  {name+'.js':<14} {b//1024:>4} KB -> {a//1024:>4} KB")

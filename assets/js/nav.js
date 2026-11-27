@@ -8,7 +8,8 @@
      them is what makes a page feel heavy while scrolling. */
   var hidden = document.hidden;
   document.addEventListener('visibilitychange', function () { hidden = document.hidden; });
-  var CANVAS_FPS = (navigator.hardwareConcurrency || 4) <= 4 ? 24 : 30;
+  var PHONE = window.innerWidth < 760 || matchMedia('(pointer: coarse)').matches;
+  var CANVAS_FPS = PHONE ? 20 : ((navigator.hardwareConcurrency || 4) <= 4 ? 24 : 30);
   function gate() {
     var step = 1000 / CANVAS_FPS, prev = -1e9;
     return function (t) { if (t - prev < step) return false; prev = t; return true; };
@@ -238,7 +239,8 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hidden = document.hidden;
   document.addEventListener('visibilitychange', function () { hidden = document.hidden; });
-  var CANVAS_FPS = (navigator.hardwareConcurrency || 4) <= 4 ? 24 : 30;
+  var PHONE = window.innerWidth < 760 || matchMedia('(pointer: coarse)').matches;
+  var CANVAS_FPS = PHONE ? 20 : ((navigator.hardwareConcurrency || 4) <= 4 ? 24 : 30);
   function gate() {
     var step = 1000 / CANVAS_FPS, prev = -1e9;
     return function (t) { if (t - prev < step) return false; prev = t; return true; };
@@ -247,7 +249,7 @@
   /* ---------- starfield ---------- */
   (function stars() {
     var cv = document.querySelector('[data-stars]');
-    if (!cv) return;
+    if (!cv || PHONE) return;
     var ctx = cv.getContext('2d'); if (!ctx) return;
     var dpr = Math.min(window.devicePixelRatio || 1, 2), W = 0, H = 0, pts = [], raf;
 
@@ -367,7 +369,7 @@
     }
 
     function build() {
-      var n = W < 700 ? 16 : 34;
+      var n = PHONE ? 11 : 34;
       marks = [];
       for (var i = 0; i < n; i++) marks.push(spawn(true));
     }
@@ -416,12 +418,16 @@
     window.addEventListener('resize', function () { if (live) { size(); build(); } });
     /* the layout settles after fonts and the preloader, so re-read the boxes */
     window.addEventListener('load', function () { setTimeout(readKeepOut, 400); });
-    setInterval(function () { if (live) readKeepOut(); }, 1500);
+    /* reading layout on a timer forces a reflow against whatever the page is
+       doing; folding it into the animation frame costs nothing extra */
+    var kcount = 0;
+    var origFrame = frame;
+    frame = function (t) { if ((kcount = (kcount + 1) % 40) === 0) readKeepOut(); origFrame(t); };
   })();
 
   (function ringField() {
     var cv = document.querySelector('[data-ringfield]');
-    if (!cv || reduce) return;
+    if (!cv || reduce || PHONE) return;
     var ctx = cv.getContext('2d');
     if (!ctx) return;
 

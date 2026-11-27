@@ -13,6 +13,13 @@
       'linear-gradient(160deg,#0A0806,#15100A)';
   }
 
+  /* A full-screen fragment shader is a desktop luxury. On a phone it is the
+     most expensive thing on the page — seconds of main-thread work while the
+     visitor is trying to read and tap — and the painted gradient reads almost
+     identically at that size. Phones get the gradient, and no GL context is
+     created at all. */
+  if (window.innerWidth < 900 || matchMedia('(pointer: coarse)').matches) { fallback(); return; }
+
   var gl = cv.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance' })
         || cv.getContext('experimental-webgl');
 
@@ -148,12 +155,12 @@
   var memory = navigator.deviceMemory || 4;
   var small  = Math.min(screen.width, screen.height) < 820;
   var weak   = cores <= 4 || memory <= 4;
-  var scale  = weak ? (small ? 0.4 : 0.5) : (small ? 0.5 : 0.68);
+  var scale  = weak ? 0.42 : 0.56;   /* fill rate is the whole cost here */
   var dpr = Math.min(window.devicePixelRatio || 1, 1.75) * scale;
 
   /* the hero shader is decorative: 30fps is indistinguishable here and
      leaves the main thread free for scrolling */
-  var FPS = weak ? 24 : 30, STEP = 1000 / FPS, acc = 0;
+  var FPS = weak ? 20 : 24, STEP = 1000 / FPS, acc = 0;
   var onScreen = true;
 
   function size() {

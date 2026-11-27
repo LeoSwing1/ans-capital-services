@@ -64,7 +64,7 @@ img,svg,video{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 button,input,select,textarea{font:inherit;color:inherit}
 ul,ol{margin:0;padding:0;list-style:none}
-h1,h2,h3,h4,h5{margin:0;color:var(--ink);font-weight:600;line-height:1.14;letter-spacing:-.015em;text-wrap:balance}
+h1,h2,h3,h4,h5,.h5{margin:0;color:var(--ink);font-weight:600;line-height:1.14;letter-spacing:-.015em;text-wrap:balance}
 p,li{text-wrap:pretty}
 p{margin:0 0 1em}
 ::selection{background:var(--gold-200);color:var(--navy)}
@@ -239,7 +239,7 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.2px) rotate(-45
 }
 body.menu-open .sheet{opacity:1;visibility:visible}
 body.menu-open .sheet-in{transform:none}
-.sheet h5{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:1.6rem 0 .7rem;font-weight:700}
+.sheet h5,.sheet .h5{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:1.6rem 0 .7rem;font-weight:700}
 .sheet a{display:block;padding:.78rem 0;border-bottom:1px solid var(--line);font-weight:600;color:var(--navy);font-size:1.02rem}
 .sheet a:active{color:var(--gold)}
 
@@ -504,7 +504,7 @@ input[type=range]::-moz-range-thumb{width:19px;height:19px;border-radius:50%;bac
 .ccard:hover{border-color:rgba(201,139,40,.4);transform:translateY(-3px);box-shadow:var(--shadow)}
 .ccard .ci2{width:44px;height:44px;border-radius:13px;background:var(--gold-050);color:var(--gold);display:grid;place-items:center;flex:none;border:1px solid rgba(201,139,40,.2)}
 .ccard .ci2 svg{width:19px;height:19px}
-.ccard h4{font-size:.73rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;font-weight:700}
+.ccard h4,.ccard h3{font-size:.73rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;font-weight:700}
 .ccard p{margin:0;font-weight:600;color:var(--ink);font-size:1rem;word-break:break-word}
 .ccard a{color:var(--navy)}
 .ccard a:hover{color:var(--gold)}
@@ -562,7 +562,7 @@ input[type=range]::-moz-range-thumb{width:19px;height:19px;border-radius:50%;bac
 .foot-logo b{font-family:var(--display);font-weight:600;color:#fff;font-size:1.66rem;letter-spacing:-.025em;display:block;line-height:1;font-weight:400}
 .foot-logo span{font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-400);font-weight:700;display:block;margin-top:4px}
 .foot p{font-size:.9rem;line-height:1.68;color:#8DA2BC;max-width:38ch}
-.foot h5{color:#fff;font-size:.715rem;letter-spacing:.19em;text-transform:uppercase;margin-bottom:1.25rem;font-weight:700}
+.foot h5,.foot .h5{color:#fff;font-size:.715rem;letter-spacing:.19em;text-transform:uppercase;margin-bottom:1.25rem;font-weight:700}
 .foot-links li{margin-bottom:.68rem}
 .foot-links a{font-size:.9rem;color:#9FB3CA;transition:color .3s,padding-left .3s var(--ease);display:inline-block}
 .foot-links a:hover{color:var(--gold-400);padding-left:5px}
@@ -864,7 +864,7 @@ body.loading{overflow:hidden}
   .nav,.rail,.bot,.callbar,#pre,.sheet,#shader{display:none!important}
   body{color:#000}
   .hero,.phead,.dark,.foot{background:#fff!important;color:#000!important}
-  .hero h1,.phead h1,.foot h5{color:#000!important}
+  .hero h1,.phead h1,.foot h5,.foot .h5{color:#000!important}
 }
 
 
@@ -2003,7 +2003,7 @@ body.menu-open .sheet-main a{animation:sheetRise .7s var(--ease) both}
 .sheet-main a[aria-current]{color:var(--gold)}
 .sheet-aside{opacity:0;animation:none}
 body.menu-open .sheet-aside{animation:sheetRise .8s var(--ease) .3s both}
-.sheet h5{
+.sheet h5,.sheet .h5{
   font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
   font-weight:600;margin:0 0 1.1rem
 }
@@ -2136,7 +2136,7 @@ body.menu-open .sheet-aside{animation:sheetRise .8s var(--ease) .3s both}
 .doc-col h4{color:var(--fg)}
 .doc-col h4 svg{color:var(--gold-400)}
 .doc-col li{color:var(--body);border-bottom-color:var(--line)}
-.ccard h4{color:var(--muted)}
+.ccard h4,.ccard h3{color:var(--muted)}
 .ccard p{color:var(--fg)}
 .ccard a,.ccard .ci2{color:var(--gold-400)}
 .ccard .ci2{background:rgba(212,160,58,.1);border-color:rgba(212,160,58,.24)}
@@ -2333,7 +2333,7 @@ body.menu-open .panel{animation:panelIn .72s var(--ease) both}
 .panel:nth-child(2){animation-delay:.11s}
 .panel:nth-child(3){animation-delay:.17s}
 .panel:nth-child(4){animation-delay:.23s}
-.panel h5{
+.panel h5,.panel .h5{
   font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:#A99D91;
   font-weight:600;margin:0 0 1.5rem
 }
@@ -2378,7 +2378,7 @@ body.menu-open .panel{animation:panelIn .72s var(--ease) both}
   .panels{grid-template-columns:1fr 1fr}
   .panel-meter{grid-column:span 2}
   .panel-meter{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:start}
-  .panel-meter h5{grid-column:1/-1}
+  .panel-meter h5,.panel-meter .h5{grid-column:1/-1}
 }
 @media (max-width:1100px){
   .ratepill .rp-k{display:block}
@@ -2808,3 +2808,28 @@ select option:disabled{color:#A99D91}
    the sticky sidebar from pinning. `clip` hides the decorative shapes the
    same way without creating one. Browsers without it keep the old behaviour. */
 .sec,.sec-sm,.sec-lg,section{overflow:clip}
+
+/* ── animation cost ───────────────────────────────────────────────────
+   box-shadow, text-shadow and background-position cannot be animated on
+   the compositor: every frame repaints on the main thread. The same look
+   comes from a pseudo-element whose opacity or transform animates instead. */
+@keyframes livedot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.78)}}
+.hm-live i,.live i,[class*="livedot"]{animation:livedot 1.8s ease-in-out infinite;box-shadow:0 0 10px rgba(91,209,126,.9)}
+@keyframes coreBeat{0%,100%{opacity:.85}50%{opacity:1}}
+.ring-core{text-shadow:0 0 34px rgba(212,160,58,.55)}
+
+/* the bar is full width and scaled from the left, so progress costs no layout */
+.progress{width:100%;transform:scaleX(0);transform-origin:0 50%;will-change:transform}
+
+/* ── page-to-page transitions ─────────────────────────────────────────
+   Where the browser supports them, the cross-fade between pages is the
+   browser's own and the click navigates immediately. The scripted fade
+   below is only for browsers without it. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vtOut .22s ease both}
+::view-transition-new(root){animation:vtIn .28s ease both}
+@keyframes vtOut{to{opacity:0}}
+@keyframes vtIn{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+}

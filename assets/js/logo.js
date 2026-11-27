@@ -1,10 +1,14 @@
 /* ANS logo — single source of truth. Each piece is separately animatable. */
+/* The mark is decorative: every place it appears sits inside a link or a
+   block that already carries the name in text, so giving the SVG its own
+   accessible name would announce the brand twice and, where the wording
+   differed, fail the label/name match check. */
 window.ANSLogo = function (p, opts) {
   p = p || 'l';
   opts = opts || {};
   var pieces = opts.pieces ? ' data-piece' : '';
   return (
-'<svg class="'+(opts.cls||'')+'" viewBox="0 0 260 252" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ANS Capital Services Private Limited logo" focusable="false">'+
+'<svg class="'+(opts.cls||'')+'" viewBox="0 0 260 252" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">'+
   '<defs>'+
     '<linearGradient id="'+p+'-gold" x1="0" y1="0" x2="1" y2="1">'+
       '<stop offset="0" stop-color="#E3B45C"/><stop offset=".48" stop-color="#C98B28"/><stop offset="1" stop-color="#A9711A"/>'+

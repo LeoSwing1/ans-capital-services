@@ -66,7 +66,21 @@
     setTimeout(function () { finish(true); }, 220);
     return;
   }
-  var SPEED = window.innerWidth < 760 ? 0.55 : 0.78;
+  /* On a phone the splash is three frames of a filmstrip the visitor did not
+     ask for, sitting in front of the content and holding up the largest paint.
+     Phones get the short brand flash; the full assembly stays on desktop. */
+  if (window.innerWidth < 760) {
+    var mq = markHost.firstChild;
+    mq.querySelectorAll('[data-piece]').forEach(function (p) { p.style.opacity = 1; });
+    w1.querySelectorAll('span').forEach(function (s) { s.style.opacity = 1; s.style.transform = 'none'; });
+    word.querySelector('.pw2').style.cssText = 'opacity:1;transform:none';
+    word.querySelector('.pw3').style.opacity = 1;
+    var p4q = word.querySelector('.pw4'); if (p4q) p4q.style.cssText = 'opacity:1;transform:none';
+    word.classList.add('lines');
+    setTimeout(function () { finish(); }, 420);
+    return;
+  }
+  var SPEED = 0.78;
   var ms = function (n) { return Math.round(n * SPEED); };
 
   var svg = markHost.firstChild;
